@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_ui_eliments_buttons",
+  "info": {
+    "displayName": "Button",
+    "icon": "stack"
+  },
+  "options": {},
+  "attributes": {
+    "Lable": {
+      "type": "string"
+    },
+    "Link": {
+      "type": "string"
+    },
+    "isExternalLink": {
+      "type": "boolean",
+      "default": false
+    },
+    "FullyRounded": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

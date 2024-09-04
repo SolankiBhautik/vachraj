@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_frame_plugin_areas",
+  "info": {
+    "displayName": "Area",
+    "icon": "expand"
+  },
+  "options": {},
+  "attributes": {
+    "Position": {
+      "type": "string"
+    },
+    "Type": {
+      "type": "enumeration",
+      "enum": [
+        "Image",
+        "Text"
+      ],
+      "default": "Image"
+    }
+  }
+}
