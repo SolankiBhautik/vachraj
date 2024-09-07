@@ -1,10 +1,11 @@
 // src/components/ProductFormField.js
 
 import React from 'react';
-import { Button, TextInput, NumberInput, Textarea, MultiSelect, MultiSelectOption, ContentLayout } from '@strapi/design-system';
+import { Button, TextInput, NumberInput, Textarea, ContentLayout } from '@strapi/design-system';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import CustomizationArea from './CustomizationArea';
+import MultiSelect from './MultiSelect';
 
 const ProductFormField = ({ values = null, onSubmit }) => {
   const [name, setName] = useState(values?.name || '');
@@ -100,31 +101,19 @@ const ProductFormField = ({ values = null, onSubmit }) => {
           required
         />
         <MultiSelect
-          label="Category"
           placeholder="Select categories"
+          label="Categories"
           value={selectedCategories}
           onChange={setSelectedCategories}
-          required
-        >
-          {categories.map(category => (
-            <MultiSelectOption key={category.id} value={category.id}>
-              {category.name}
-            </MultiSelectOption>
-          ))}
-        </MultiSelect>
+          attribute={categories}
+        />
         <MultiSelect
-          label="Sizes"
           placeholder="Select sizes"
+          label="Sizes"
           value={selectedSizes}
           onChange={setSelectedSizes}
-          required
-        >
-          {sizes.map(size => (
-            <MultiSelectOption key={size.id} value={size.id}>
-              {size.name}
-            </MultiSelectOption>
-          ))}
-        </MultiSelect>
+          attribute={sizes}
+        />
         <CustomizationArea onChange={handleCustomizationChange} previewImage={previewImage} customizationZone={customizationZone} />
         <Button type="submit" loading={loading} style={{ marginTop: '1rem' }}>
           Save Product
