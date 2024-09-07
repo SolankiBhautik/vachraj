@@ -1,33 +1,57 @@
+import '../styles/CustomizationArea.css'; // Add your CSS here
+
 import React, { useState, useRef } from 'react';
 import { Box, Button, Radio, RadioGroup, EmptyStateLayout } from '@strapi/design-system';
-import '../styles/CustomizationArea.css'; // Add your CSS here
-import { Cross, Plus, Trash } from '@strapi/icons';
+import { Cross, PicturePlus, Plus, Trash } from '@strapi/icons';
+import axios from 'axios';
 
-const CustomizationArea = ({ onChange }) => {
-    const [image, setImage] = useState(null);
-    const [indicators, setIndicators] = useState([]);
+const CustomizationArea = ({ onChange, previewImage, customizationZone }) => {
+    const [image, setImage] = useState(previewImage.url || null);
+    const [imageid, setImageid] = useState(null);
+    const [indicators, setIndicators] = useState(customizationZone || []);
     const [dragging, setDragging] = useState(false);
     const [startPos, setStartPos] = useState({ x: 0, y: 0 });
     const [currentRect, setCurrentRect] = useState(null);
     const [selectedIndicator, setSelectedIndicator] = useState(null);
-    const [selectedType, setSelectedType] = useState("");
+    const [selectedType, setSelectedType] = useState("image");
     const [showModal, setShowModal] = useState(false);
     const [Modal, setModal] = useState({ x: 0, y: 0 });
     const [canCreateRectangle, setCanCreateRectangle] = useState(false);
 
-
     const imageRef = useRef(null);
     const fileInputRef = useRef(null);
 
+
+    // Function to upload the image file
+    const uploadImage = async (file) => {
+        const formData = new FormData();
+        formData.append('files', file);
+
+        try {
+            const response = await axios.post('/api/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            // Return the uploaded file's ID or URL
+            return response.data[0].id; // Assuming response contains the file ID
+        } catch (error) {
+            console.error('Failed to upload image', error);
+            throw error;
+        }
+    };
+
     // Handle image upload
-    const handleImageUpload = (event) => {
+    const handleImageUpload = async (event) => {
         const file = event.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setImage(reader.result);
-            };
-            reader.readAsDataURL(file);
+            try {
+                const fileId = await uploadImage(file);
+                setImageid(fileId);
+                setImage(URL.createObjectURL(file));
+            } catch (error) {
+                console.error('Failed to handle image upload', error);
+            }
         }
     };
 
@@ -51,7 +75,6 @@ const CustomizationArea = ({ onChange }) => {
     // Start dragging to create a rectangle
     const startDrag = (e) => {
         if (!canCreateRectangle) return;
-        console.log('startDrag')
 
         const rect = imageRef.current.getBoundingClientRect();
         const startX = (e.clientX - rect.left) / rect.width * 100; // Normalize to percentage
@@ -70,7 +93,6 @@ const CustomizationArea = ({ onChange }) => {
 
     // Update rectangle dimensions while dragging
     const drag = (e) => {
-        console.log('drag')
 
         if (!dragging) return;
         const rect = imageRef.current.getBoundingClientRect();
@@ -89,26 +111,37 @@ const CustomizationArea = ({ onChange }) => {
         e.preventDefault(); // Prevent default dragging behavior
     };
 
-    // End dragging, save the rectangle
     const endDrag = (e) => {
-
         if (!dragging || !imageRef.current || !currentRect) return;
+
+        const rect = imageRef.current.getBoundingClientRect();
+        const width = currentRect.width / 100 * rect.width;
+        const height = currentRect.height / 100 * rect.height;
+
+        // Check if both width and height are at least 30px, and at least one of them is greater than 50px
+        if ((width < 30 || height < 30) || !(width > 50 || height > 50)) {
+            setDragging(false); // Stop dragging
+            setCurrentRect(null); // Clear the rectangle state
+            return; // Do not create the rectangle
+        }
+
+
         setDragging(false); // Stop dragging
         setCanCreateRectangle(false);
 
         const newIndicator = {
             id: indicators.length + 1,
             ...currentRect,
-            type: '', // Will be set once the user selects a type
+            type: 'image',
         };
 
         setIndicators([...indicators, newIndicator]);
         setCurrentRect(null); // Clear the rectangle state
         setSelectedIndicator(newIndicator.id);
-        setModal({ x: e.clientX, y: e.clientY })
+        setModal({ x: e.clientX, y: e.clientY });
         setShowModal(true); // Open the modal for the new rectangle
-        onChange([...indicators, newIndicator]); // Notify parent of the changes
     };
+
 
     // Open the modal for editing the indicator
     const openModal = (indicatorId, e) => {
@@ -126,7 +159,10 @@ const CustomizationArea = ({ onChange }) => {
         );
         setIndicators(updatedIndicators);
         setShowModal(false); // Close the modal
-        onChange(updatedIndicators); // Notify parent of the changes
+        onChange({
+            'updatedIndicators': updatedIndicators,
+            'image': imageid,
+        }); // Notify parent of the changes
     };
 
     // Delete the selected indicator
@@ -134,7 +170,10 @@ const CustomizationArea = ({ onChange }) => {
         const updatedIndicators = indicators.filter(indicator => indicator.id !== selectedIndicator);
         setIndicators(updatedIndicators);
         setShowModal(false); // Close the modal
-        onChange(updatedIndicators); // Notify parent of the changes
+        onChange({
+            'updatedIndicators': updatedIndicators,
+            'image': imageid,
+        }); // Notify parent of the changes
     };
 
     const togglecanCreateRectangle = () => {
@@ -207,7 +246,7 @@ const CustomizationArea = ({ onChange }) => {
             ) : (
                 <Box padding={8} background="neutral100">
                     <EmptyStateLayout
-                        icon={<Cross />}
+                        icon={<PicturePlus style={{ width: '6rem' }} />}
                         content="You don't have any content yet..."
                         action={
                             <Button variant="secondary" startIcon={<Plus />} onClick={triggerFileInput}>
@@ -227,7 +266,7 @@ const CustomizationArea = ({ onChange }) => {
                     }}>
                     <Box padding={3}>
                         <RadioGroup value={selectedType} labelledBy="typeselection" name="typeselection" onChange={(e) => setSelectedType(e.target.value)}>
-                            <Radio value="image">Image</Radio>
+                            <Radio value="image" aria-checked="true">Image</Radio>
                             <Radio value="text">Text</Radio>
                         </RadioGroup>
                         <div className="modal-actions">

@@ -675,7 +675,7 @@ export interface PluginFrameProduct extends Schema.CollectionType {
       'manyToMany',
       'plugin::frame.size'
     >;
-    customization_zone: Attribute.DynamicZone<['frame-plugin.area']>;
+    customization_zone: Attribute.JSON & Attribute.DefaultTo<[]>;
     customization_preview_image: Attribute.Media;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -957,6 +957,52 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
 }
 
+export interface PluginTodoTask extends Schema.CollectionType {
+  collectionName: 'todo_task';
+  info: {
+    tableName: 'task';
+    singularName: 'task';
+    pluralName: 'tasks';
+    displayName: 'Task';
+    description: 'A task in Strapi';
+    kind: 'collectionType';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  pluginOptions: {
+    'content-manager': {
+      visible: false;
+    };
+    'content-type-builder': {
+      visible: false;
+    };
+  };
+  attributes: {
+    name: Attribute.String &
+      Attribute.Required &
+      Attribute.SetMinMaxLength<{
+        maxLength: 40;
+      }>;
+    isDone: Attribute.Boolean & Attribute.DefaultTo<false>;
+    related: Attribute.Relation<'plugin::todo.task', 'morphToOne'>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'plugin::todo.task',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'plugin::todo.task',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -980,6 +1026,7 @@ declare module '@strapi/types' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'plugin::todo.task': PluginTodoTask;
     }
   }
 }

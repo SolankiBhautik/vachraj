@@ -2,9 +2,10 @@
 
 .customizationAreaContainer {
   width: 100%;
-  border: 1px solid #ccc;
+  border: 1px solid #4a4a6a;
   position: relative;
   height: fit-content;
+  margin-top: 1rem;
 }
 
 
@@ -62,7 +63,7 @@
   position: absolute;
   top: 0;
   margin: 1rem;
-  z-index: 99;
+  z-index: 9;
 }
 
 .add_ractangle {

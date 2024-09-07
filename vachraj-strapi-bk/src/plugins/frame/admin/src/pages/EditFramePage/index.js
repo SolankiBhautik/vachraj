@@ -2,12 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { ContentLayout, HeaderLayout, Button } from '@strapi/design-system';
+import { ContentLayout, HeaderLayout, Button, Layout, BaseHeaderLayout } from '@strapi/design-system';
 import ProductFormField from '../../components/ProductFormField';
 import axios from 'axios';
 
 const EditFramePage = () => {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -42,8 +42,8 @@ const EditFramePage = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <ContentLayout>
-      <HeaderLayout
+    <Layout sideNav={null}>
+      <BaseHeaderLayout
         title="Edit Product"
         primaryAction={
           <Button onClick={() => window.history.back()} variant="secondary">
@@ -52,7 +52,7 @@ const EditFramePage = () => {
         }
       />
       {product && <ProductFormField values={product} onSubmit={handleEdit} />}
-    </ContentLayout>
+    </Layout>
   );
 };
 

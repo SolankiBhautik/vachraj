@@ -41,10 +41,8 @@ module.exports = {
       "target": "plugin::frame.size"
     },
     "customization_zone": {
-      "type": "dynamiczone",
-      "components": [
-        "frame-plugin.area"
-      ]
+      "type": "json",
+      "default": []
     },
     "customization_preview_image": {
       "type": "media",
