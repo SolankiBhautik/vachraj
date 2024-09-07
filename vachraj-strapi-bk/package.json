@@ -12,15 +12,17 @@
   },
   "dependencies": {
     "@ckeditor/strapi-plugin-ckeditor": "^0.0.13",
+    "@strapi/design-system": "^1.19.0",
+    "@strapi/icons": "^1.19.0",
     "@strapi/plugin-cloud": "4.25.9",
     "@strapi/plugin-i18n": "4.25.9",
     "@strapi/plugin-users-permissions": "4.25.9",
     "@strapi/strapi": "^4.24.5",
     "better-sqlite3": "8.6.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-router-dom": "5.3.4",
-    "styled-components": "5.3.3"
+    "styled-components": "^5.3.3"
   },
   "author": {
     "name": "A Strapi developer"

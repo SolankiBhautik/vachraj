@@ -1,0 +1,99 @@
+/* src/components/CustomizationArea.module.scss */
+
+.customizationAreaContainer {
+  width: 100%;
+  border: 1px solid #ccc;
+  position: relative;
+  height: fit-content;
+}
+
+
+.imageContainer {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+.rectangle {
+  position: absolute;
+  border: 2px solid #4a90e2;
+  background-color: rgba(74, 144, 226, 0.2);
+  cursor: pointer;
+}
+
+.indicatorNumber {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  background-color: #ff5733;
+  color: white;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.indicatorTrigger {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  border: 2px solid #000;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.customizationImage {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.change_image_btn {
+  position: absolute;
+  top: 0;
+  margin: 1rem;
+  z-index: 99;
+}
+
+.add_ractangle {
+  right: 0;
+}
+
+
+.change_img {
+  left: 0;
+}
+
+.custom-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -105%);
+  background-color: #212134;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #4a4a6a;
+  box-shadow: 0 4px 8px #00000099;
+  z-index: 1000;
+}
+
+.custom-modal label {
+  cursor: pointer;
+}
+
+.modal-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}

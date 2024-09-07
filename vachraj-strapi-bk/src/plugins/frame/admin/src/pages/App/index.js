@@ -12,17 +12,20 @@ import pluginId from '../../pluginId';
 import HomePage from '../HomePage';
 import CreateFramePage from '../CreateFramePage';
 import EditFramePage from '../EditFramePage';
+import { DesignSystemProvider, darkTheme } from '@strapi/design-system';
 
 const App = () => {
   return (
-    <div>
-      <Switch>
-        <Route path={`/plugins/${pluginId}`} component={HomePage} exact />
-        <Route path={`/plugins/${pluginId}/create-frame`} component={CreateFramePage} exact />
-        <Route path={`/plugins/${pluginId}/edit-frame/:id`} component={EditFramePage} exact />
-        <Route component={AnErrorOccurred} />
-      </Switch>
-    </div>
+    <DesignSystemProvider locale="en-GB" theme={darkTheme}>
+      <div>
+        <Switch>
+          <Route path={`/plugins/${pluginId}`} component={HomePage} exact />
+          <Route path={`/plugins/${pluginId}/create-frame`} component={CreateFramePage} exact />
+          <Route path={`/plugins/${pluginId}/edit-frame/:id`} component={EditFramePage} exact />
+          <Route component={AnErrorOccurred} />
+        </Switch>
+      </div>
+    </DesignSystemProvider>
   );
 };
 

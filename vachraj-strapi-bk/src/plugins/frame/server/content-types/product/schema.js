@@ -45,6 +45,10 @@ module.exports = {
       "components": [
         "frame-plugin.area"
       ]
+    },
+    "customization_preview_image": {
+      "type": "media",
+      "multiple": false,
     }
   }
 }

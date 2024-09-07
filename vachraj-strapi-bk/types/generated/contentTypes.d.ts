@@ -676,6 +676,7 @@ export interface PluginFrameProduct extends Schema.CollectionType {
       'plugin::frame.size'
     >;
     customization_zone: Attribute.DynamicZone<['frame-plugin.area']>;
+    customization_preview_image: Attribute.Media;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

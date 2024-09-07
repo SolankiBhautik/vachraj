@@ -4,6 +4,7 @@ import React from 'react';
 import { Button, TextInput, NumberInput, Textarea, MultiSelect, MultiSelectOption } from '@strapi/design-system';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import CustomizationArea from './CustomizationArea';
 
 const ProductFormField = ({ values = null, onSubmit }) => {
   const [name, setName] = useState(values?.name || '');
@@ -17,6 +18,7 @@ const ProductFormField = ({ values = null, onSubmit }) => {
   const [customizationZone, setCustomizationZone] = useState(values?.customization_zone || []);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -109,6 +111,7 @@ const ProductFormField = ({ values = null, onSubmit }) => {
           </MultiSelectOption>
         ))}
       </MultiSelect>
+      <CustomizationArea onChange={() => console.log('test')} />
       <Button type="submit" loading={loading} style={{ marginTop: '1rem' }}>
         Save Product
       </Button>
