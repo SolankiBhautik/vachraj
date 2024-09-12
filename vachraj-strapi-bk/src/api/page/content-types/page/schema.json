@@ -24,7 +24,8 @@
     "Content": {
       "type": "dynamiczone",
       "components": [
-        "section.hero"
+        "section.hero",
+        "section.feature-product"
       ]
     }
   }

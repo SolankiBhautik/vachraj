@@ -411,7 +411,7 @@ export interface ApiPagePage extends Schema.CollectionType {
     Page: Attribute.String;
     Description: Attribute.Text;
     slug: Attribute.UID;
-    Content: Attribute.DynamicZone<['section.hero']>;
+    Content: Attribute.DynamicZone<['section.hero', 'section.feature-product']>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

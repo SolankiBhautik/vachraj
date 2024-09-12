@@ -10,9 +10,6 @@
     "Heading": {
       "type": "string"
     },
-    "Description": {
-      "type": "richtext"
-    },
     "Image": {
       "type": "media",
       "multiple": true,
@@ -25,6 +22,14 @@
       "type": "component",
       "repeatable": false,
       "component": "ui-eliments.button"
+    },
+    "Description": {
+      "type": "customField",
+      "options": {
+        "output": "HTML",
+        "preset": "rich"
+      },
+      "customField": "plugin::ckeditor.CKEditor"
     }
   }
 }

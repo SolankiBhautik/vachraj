@@ -7,8 +7,8 @@ const Navigation = ({ navItems }) => {
       <ul className="flex space-x-6">
         {navItems.map((item) => (
           <li key={item.id}>
-            <Link 
-              href={`/${item.id}`} 
+            <Link
+              href={`/${item.slug}`}
               className="text-white hover:text-gray-300 transition-colors duration-300"
               id={item.id}
             >

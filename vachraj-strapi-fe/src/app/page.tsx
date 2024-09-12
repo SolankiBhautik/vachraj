@@ -8,9 +8,9 @@ import { fetchData } from '../lib/fetchData';
 export default async function DynamicPage() {
 
   try {
-    const pageData = await fetchData(`/api/pages?filters[id][$eq]=1&populate[Content][populate]=*`);
+    const pageData = await fetchData(`/api/pages?filters[slug][$eq]=home`);
 
-    const pageAttributes = pageData.data[0]?.attributes;
+    const pageAttributes = pageData[0];
 
     if (!pageAttributes) {
       return <h1>Page Not Found</h1>;

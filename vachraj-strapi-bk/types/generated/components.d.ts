@@ -23,9 +23,40 @@ export interface SectionHero extends Schema.Component {
   };
   attributes: {
     Heading: Attribute.String;
-    Description: Attribute.RichText;
     Image: Attribute.Media<'images', true>;
     Button: Attribute.Component<'ui-eliments.button'>;
+    Description: Attribute.RichText &
+      Attribute.CustomField<
+        'plugin::ckeditor.CKEditor',
+        {
+          output: 'HTML';
+          preset: 'rich';
+        }
+      >;
+  };
+}
+
+export interface SectionFeatureProduct extends Schema.Component {
+  collectionName: 'components_section_feature_products';
+  info: {
+    displayName: 'Feature Product';
+  };
+  attributes: {
+    Heading: Attribute.String;
+    Description: Attribute.RichText &
+      Attribute.CustomField<
+        'plugin::ckeditor.CKEditor',
+        {
+          output: 'HTML';
+          preset: 'rich';
+        }
+      >;
+    Button: Attribute.Component<'ui-eliments.button'>;
+    frame_products: Attribute.Relation<
+      'section.feature-product',
+      'oneToMany',
+      'plugin::frame.product'
+    >;
   };
 }
 
@@ -47,6 +78,7 @@ declare module '@strapi/types' {
     export interface Components {
       'ui-eliments.button': UiElimentsButton;
       'section.hero': SectionHero;
+      'section.feature-product': SectionFeatureProduct;
       'frame-plugin.area': FramePluginArea;
     }
   }

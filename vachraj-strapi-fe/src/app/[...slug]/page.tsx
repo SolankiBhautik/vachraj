@@ -6,7 +6,7 @@ import Hero from '../../components/contentElements/section/Hero';
 export default async function DynamicPage({ params }: { params: { slug: string[] } }) {
   const id = params.slug.join('/');
   try {
-    const pageData = await fetchData(`/api/pages?filters[id][$eq]=${id}&populate[Content][populate]=*`);
+    const pageData = await fetchData(`/api/pages?filters[slug][$eq]=${params.slug}`);
 
     const pageAttributes = pageData.data[0]?.attributes;
 

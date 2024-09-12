@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_section_feature_products",
+  "info": {
+    "displayName": "Feature Product"
+  },
+  "options": {},
+  "attributes": {
+    "Heading": {
+      "type": "string"
+    },
+    "Description": {
+      "type": "customField",
+      "options": {
+        "output": "HTML",
+        "preset": "rich"
+      },
+      "customField": "plugin::ckeditor.CKEditor"
+    },
+    "Button": {
+      "type": "component",
+      "repeatable": false,
+      "component": "ui-eliments.button"
+    },
+    "frame_products": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::frame.product"
+    }
+  }
+}
