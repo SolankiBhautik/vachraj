@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button as ShadcnButton } from '../../ui/button';
 
-const Button = ({ label, link, isExternal, fullyRounded }) => {
+export const Button = ({ label, link, isExternal, fullyRounded }) => {
   return (
     <ShadcnButton
       asChild
@@ -18,4 +18,3 @@ const Button = ({ label, link, isExternal, fullyRounded }) => {
   );
 };
 
-export default Button;

@@ -85,6 +85,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -93,23 +94,22 @@
 
 body {
   position: relative;
-  overflow: hidden; 
 }
 
 .main-container {
   position: relative;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 
 .gradient-heading {
-  background: linear-gradient(to top, 
-    rgba(255, 255, 255, 0.25) 0%, 
-    rgba(255, 255, 255, 1) 19%, 
-    rgba(255, 255, 255, 1) 71%, 
-    rgba(255, 255, 255, 0.25) 100%);
+  background: linear-gradient(to top,
+      rgba(255, 255, 255, 0.25) 0%,
+      rgba(255, 255, 255, 1) 19%,
+      rgba(255, 255, 255, 1) 71%,
+      rgba(255, 255, 255, 0.25) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  color: transparent; 
+  color: transparent;
 }

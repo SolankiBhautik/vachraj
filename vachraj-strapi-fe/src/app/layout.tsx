@@ -2,6 +2,7 @@
 
 import '../styles/globals.css';
 import '../styles/animations.css';
+import '../styles/layout.css';
 
 import Navigation from '../components/Navigation';
 
@@ -22,10 +23,10 @@ export default async function Layout({ children }) {
   }
 
   return (
-    <html>
+    <html className='dark'>
       <body className='bg-background'>
-        <Navigation navItems={navItems} />
-        <main>
+        <main className="layout-container">
+          <Navigation navItems={navItems} />
           {children}
         </main>
       </body>

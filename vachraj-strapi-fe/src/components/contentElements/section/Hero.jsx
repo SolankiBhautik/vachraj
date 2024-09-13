@@ -1,27 +1,24 @@
 import React from 'react';
-import Button from '../uiElements/Button';
-import { marked } from 'marked';
+import { Button as UiButton } from '../uiElements/Button';
 
 
-const Hero = ({ heading, description, image, link }) => {
-
-  const descriptionHtml = marked(description);
-  const imgdata = image[0];
+const Hero = ({ Heading, Description, Image, Button }) => {
+  const imgdata = Image[0];
   return (
-    <section className="hero-section py-16">
-      <div className="container mx-auto flex flex-col md:flex-row items-center justify-between md:ps-[10%]">
-        <div className="text-content px-4 text-white text-center md:text-left sm:w-[75%] md:w-1/2 mb-8 lg:mb-0 ">
-          <h1 className="gradient-heading !leading-tight  text-5xl lg:text-6xl font-bold mb-4 tracking-[-2px]">{heading}</h1>
+    <section className="hero-section py-16 feature">
+      <div className="flex flex-col md:flex-row items-center justify-between">
+        <div className="text-content text-white text-center md:text-left sm:w-[75%] md:w-1/2 xl:w-full mb-8 lg:mb-0 ">
+          <h1 className="gradient-heading !leading-tight  text-5xl lg:text-6xl font-bold mb-4 tracking-[-2px]">{Heading}</h1>
           <div
             className="text-lg mb-6 "
-            dangerouslySetInnerHTML={{ __html: descriptionHtml }}
+            dangerouslySetInnerHTML={{ __html: Description }}
           />
-          {link && (
-            <Button
-              label={link.Lable}
-              link={link.Link}
-              isExternal={link.isExternalLink}
-              fullyRounded={link.FullyRounded}
+          {Button && (
+            <UiButton
+              label={Button.Lable}
+              link={Button.Link}
+              isExternal={Button.isExternalLink}
+              fullyRounded={Button.FullyRounded}
             />
           )}
         </div>

@@ -1,0 +1,31 @@
+/* Define the grid layout for the main content */
+.layout-container {
+    --gap: clamp(1rem, 6vw, 3rem);
+    --full: minmax(var(--gap), 1fr);
+    --content: min(100ch, 100% - var(--gap) * 2);
+    --popout: minmax(0, 2rem);
+    --feature: minmax(0, 2rem);
+
+    display: grid;
+    grid-template-columns:
+        [full-start] var(--full) [feature-start] var(--feature) [popout-start] var(--popout) [content-start] var(--content) [content-end] var(--popout) [popout-end] var(--feature) [feature-end] var(--full) [full-end];
+}
+
+.layout-container>* {
+    grid-column: content;
+}
+
+/* Full-width element (e.g., background or image that spans full width) */
+.full {
+    grid-column: full;
+}
+
+/* Popout element (e.g., small image or block that extends slightly beyond content) */
+.popout {
+    grid-column: popout;
+}
+
+/* Feature element (e.g., special content that extends even more) */
+.feature {
+    grid-column: feature;
+}
