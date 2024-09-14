@@ -47,6 +47,12 @@ module.exports = {
     "customization_preview_image": {
       "type": "media",
       "multiple": false,
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false,
+      "required": false,
+      "description": "Mark product as featured"
     }
   }
 }

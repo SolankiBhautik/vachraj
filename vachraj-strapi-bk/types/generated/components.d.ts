@@ -25,14 +25,7 @@ export interface SectionHero extends Schema.Component {
     Heading: Attribute.String;
     Image: Attribute.Media<'images', true>;
     Button: Attribute.Component<'ui-eliments.button'>;
-    Description: Attribute.RichText &
-      Attribute.CustomField<
-        'plugin::ckeditor.CKEditor',
-        {
-          output: 'HTML';
-          preset: 'rich';
-        }
-      >;
+    Text: Attribute.Text;
   };
 }
 
@@ -40,6 +33,7 @@ export interface SectionFeatureProduct extends Schema.Component {
   collectionName: 'components_section_feature_products';
   info: {
     displayName: 'Feature Product';
+    description: '';
   };
   attributes: {
     Heading: Attribute.String;
@@ -52,11 +46,6 @@ export interface SectionFeatureProduct extends Schema.Component {
         }
       >;
     Button: Attribute.Component<'ui-eliments.button'>;
-    frame_products: Attribute.Relation<
-      'section.feature-product',
-      'oneToMany',
-      'plugin::frame.product'
-    >;
   };
 }
 

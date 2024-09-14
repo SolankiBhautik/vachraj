@@ -15,7 +15,7 @@ const components = {
 
 export default async function DynamicPage() {
   try {
-    const pageData = await fetchData(`/api/pages?filters[slug][$eq]=home`);
+    const pageData = await fetchData(`/api/home-page?populate=deep`);
     const pageAttributes = pageData[0];
 
     if (!pageAttributes) {

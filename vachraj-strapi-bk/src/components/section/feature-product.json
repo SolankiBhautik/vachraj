@@ -1,7 +1,8 @@
 {
   "collectionName": "components_section_feature_products",
   "info": {
-    "displayName": "Feature Product"
+    "displayName": "Feature Product",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -20,11 +21,6 @@
       "type": "component",
       "repeatable": false,
       "component": "ui-eliments.button"
-    },
-    "frame_products": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "plugin::frame.product"
     }
   }
 }

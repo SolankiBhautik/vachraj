@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@ckeditor/strapi-plugin-ckeditor": "^0.0.13",
+    "@magictm/strapi-plugin-deep-populate": "^1.1.0",
     "@strapi/design-system": "^1.19.0",
     "@strapi/icons": "^1.19.0",
     "@strapi/plugin-cloud": "4.25.9",
@@ -22,12 +23,10 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "5.3.4",
-    "strapi-plugin-populate-deep": "^3.0.1",
-    "strapi-plugin-todo": "^0.0.10",
     "styled-components": "^5.3.3"
   },
   "author": {
-    "name": "A Strapi developer"
+    "name": "Bhautik Solanki"
   },
   "strapi": {
     "uuid": "5c533e5d-59e4-449c-a194-1762350ef8cf"

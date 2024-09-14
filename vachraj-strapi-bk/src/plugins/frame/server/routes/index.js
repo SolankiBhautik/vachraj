@@ -9,6 +9,15 @@ module.exports = [
     },
   },
   {
+    method: 'GET',
+    path: '/products/featured',
+    handler: 'main.findFeatured',
+    config: {
+      policies: [],
+      auth: false,
+    },
+  },
+  {
     method: 'PUT',
     path: '/product/update/:id',
     handler: 'main.update',
@@ -16,7 +25,7 @@ module.exports = [
       policies: [],
       auth: false
     },
-  },  
+  },
   {
     method: 'GET',
     path: '/product/',
