@@ -7,7 +7,7 @@ const Hero = ({ Heading, Text, Image, Button }) => {
   const imgdata = Image.data[0].attributes;
 
   return (
-    <section className="hero-section py-16">
+    <section className="hero-section py-16  min-h-svh">
       <div className="">
         <div className="text-content flex flex-col center md:text-left  mb-8 lg:mb-0 ">
           <HeadingUi heading={Heading} text={Text} />

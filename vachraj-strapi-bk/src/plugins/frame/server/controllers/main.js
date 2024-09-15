@@ -46,6 +46,7 @@ module.exports = ({ strapi }) => ({
     try {
       const featuredProducts = await strapi.entityService.findMany('plugin::frame.product', {
         filters: { featured: true },
+        populate: '*'
       });
 
       ctx.body = featuredProducts;
