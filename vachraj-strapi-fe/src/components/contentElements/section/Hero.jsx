@@ -17,6 +17,7 @@ const Hero = ({ Heading, Text, Image, Button }) => {
               link={Button.Link}
               isExternal={Button.isExternalLink}
               fullyRounded={Button.FullyRounded}
+              className='w-fit m-auto'
             />
           )}
         </div>

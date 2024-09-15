@@ -1,11 +1,11 @@
 import React from 'react';
 import { Button as ShadcnButton } from '../../ui/button';
 
-export const Button = ({ label, link, isExternal, fullyRounded }) => {
+export const Button = ({ label, link, isExternal, fullyRounded, className = '' }) => {
   return (
     <ShadcnButton
       asChild
-      className={`${fullyRounded ? 'rounded-full' : 'rounded-md'}`}
+      className={`${fullyRounded ? 'rounded-full' : 'rounded-md'} ${className}`}
     >
       <a
         href={link}

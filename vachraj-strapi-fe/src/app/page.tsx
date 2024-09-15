@@ -11,6 +11,8 @@ import FeatureProduct from '../components/contentElements/section/FeatureProduct
 export default async function DynamicPage() {
   try {
     const pageData = await fetchData(`/api/home-page?populate=deep`);
+    const products = await fetchData(`/frame/products/featured`);
+
     const pageAttributes = pageData.data.attributes;
 
     const heroData = pageAttributes.Content.find(content => content.__component === 'section.hero');
@@ -20,12 +22,10 @@ export default async function DynamicPage() {
     if (!pageAttributes) {
       return <h1>Page Not Found</h1>;
     }
-
-    console.log(heroData)
     return (
       <>
         {heroData && <Hero {...heroData} />}
-        {/* {featureProductData && <FeatureProduct {...featureProductData} />} */}
+        {featureProductData && <FeatureProduct {...featureProductData} products={products} />}
       </>
     );
   } catch (error) {
