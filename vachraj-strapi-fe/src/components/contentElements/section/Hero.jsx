@@ -1,18 +1,16 @@
 import React from 'react';
 import { Button as UiButton } from '../uiElements/Button';
+import HeadingUi from '../../animations/HeadingUi';
 
 
-const Hero = ({ Heading, Description, Image, Button }) => {
-  const imgdata = Image[0];
+const Hero = ({ Heading, Text, Image, Button }) => {
+  const imgdata = Image.data[0].attributes;
+
   return (
-    <section className="hero-section py-16 feature">
-      <div className="flex flex-col md:flex-row items-center justify-between">
-        <div className="text-content text-white text-center md:text-left sm:w-[75%] md:w-1/2 xl:w-full mb-8 lg:mb-0 ">
-          <h1 className="gradient-heading !leading-tight  text-5xl lg:text-6xl font-bold mb-4 tracking-[-2px]">{Heading}</h1>
-          <div
-            className="text-lg mb-6 "
-            dangerouslySetInnerHTML={{ __html: Description }}
-          />
+    <section className="hero-section py-16">
+      <div className="">
+        <div className="text-content flex flex-col center md:text-left  mb-8 lg:mb-0 ">
+          <HeadingUi heading={Heading} text={Text} />
           {Button && (
             <UiButton
               label={Button.Lable}
