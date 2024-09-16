@@ -54,4 +54,19 @@ module.exports = ({ strapi }) => ({
       ctx.throw(500, 'Unable to fetch featured products');
     }
   },
+  async deleteFrame(ctx) {
+    const { id } = ctx.params;
+
+    try {
+      await strapi.service('plugin::frame.product').deleteFrame(id);
+      ctx.send({
+        message: 'Frame deleted successfully',
+      });
+    } catch (error) {
+      ctx.send({
+        message: 'Failed to delete frame',
+        error: error.message,
+      }, 500);
+    }
+  },
 });

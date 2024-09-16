@@ -50,4 +50,14 @@ module.exports = ({ strapi }) => ({
 
     return updatedProduct;
   },
+  async deleteFrame(id) {
+    try {
+      await strapi.entityService.delete('api::frame.frame', id);
+
+      return { success: true };
+    } catch (error) {
+      strapi.log.error('Failed to delete frame:', error);
+      throw new Error('Could not delete frame');
+    }
+  },
 });

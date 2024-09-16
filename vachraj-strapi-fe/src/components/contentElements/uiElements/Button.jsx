@@ -1,20 +1,34 @@
 import React from 'react';
 import { Button as ShadcnButton } from '../../ui/button';
 
-export const Button = ({ label, link, isExternal, fullyRounded, className = '' }) => {
+
+export const Button = ({
+  label,
+  link,
+  isExternal = false,
+  fullyRounded = false,
+  className = '',
+  onClick, 
+}) => {
+  const buttonContent = <span>{label}</span>;
+
   return (
     <ShadcnButton
-      asChild
+      asChild={!onClick} 
       className={`${fullyRounded ? 'rounded-full' : 'rounded-md'} ${className}`}
+      onClick={onClick} 
     >
-      <a
-        href={link}
-        target={isExternal ? '_blank' : '_self'}
-        rel={isExternal ? 'noopener noreferrer' : ''}
-      >
-        {label}
-      </a>
+      {link ? (
+        <a
+          href={link}
+          target={isExternal ? '_blank' : '_self'}
+          rel={isExternal ? 'noopener noreferrer' : ''}
+        >
+          {buttonContent}
+        </a>
+      ) : (
+        buttonContent
+      )}
     </ShadcnButton>
   );
 };
-

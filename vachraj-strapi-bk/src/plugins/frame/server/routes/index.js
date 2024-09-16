@@ -45,6 +45,15 @@ module.exports = [
     },
   },
   {
+    method: 'DELETE',
+    path: '/product/delete/:id',
+    handler: 'main.deleteFrame',
+    config: {
+      policies: [],
+      middlewares: [],
+    },
+  },
+  {
     method: 'GET',
     path: '/category/list',
     handler: 'category.list',

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, LinkButton, IconButton, Table, Thead, Tbody, Tr, Th, Td, EmptyStateLayout, BaseHeaderLayout, ContentLayout, Layout } from '@strapi/design-system';
-import { Pencil, Plus, PicturePlus } from '@strapi/icons';
+import { Pencil, Plus, PicturePlus, Trash } from '@strapi/icons';
 import { Link } from 'react-router-dom';
 import pluginId from '../pluginId';
 
@@ -23,6 +23,18 @@ const FrameListView = () => {
     fetchFrames();
   }, []);
 
+  // Handle product deletion
+  const handleDelete = async (id) => {
+    if (confirm('Are you sure you want to delete this frame?')) {
+      try {
+        await axios.delete(`/frame/product/delete/${id}`);
+
+        setFrames((prevFrames) => prevFrames.filter((frame) => frame.id !== id));
+      } catch (error) {
+        console.error('Failed to delete frame', error);
+      }
+    }
+  };
 
   return (
     <Layout sideNav={null}>
@@ -72,9 +84,7 @@ const FrameListView = () => {
                       to={`/plugins/${pluginId}/edit-frame/${frame.id}`}
                       style={{ textDecoration: 'none' }}
                     >
-                      <Button variant="secondary" startIcon={<Pencil />}>
-                        Edit
-                      </Button>
+                      <Button variant="secondary" startIcon={<Pencil />} />
                     </Link>
                   </Td>
                 </Tr>
