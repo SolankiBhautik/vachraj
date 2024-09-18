@@ -1,19 +1,42 @@
 import React, { useEffect, useState } from 'react';
-import { Button, LinkButton, IconButton, Table, Thead, Tbody, Tr, Th, Td, EmptyStateLayout, BaseHeaderLayout, ContentLayout, Layout } from '@strapi/design-system';
-import { Pencil, Plus, PicturePlus, Trash } from '@strapi/icons';
+import { Pencil, Plus, PicturePlus, Trash, ArrowLeft } from '@strapi/icons';
 import { Link } from 'react-router-dom';
 import pluginId from '../pluginId';
+import {
+  Main,
+  ActionLayout,
+  Button,
+  ContentLayout,
+  HeaderLayout,
+  Td,
+  Tr,
+  Table,
+  Thead,
+  Tbody,
+  Th,
+  EmptyStateLayout,
+} from '@strapi/design-system';
+import {
+  SearchURLQuery,
+  Link as StrapiLink,
+  useQueryParams
+} from '@strapi/helper-plugin';
+import buildParams from '../utils/buildValidGetParams'
 
 import axios from 'axios';
 
 const FrameListView = () => {
   const [frames, setFrames] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [{ query }] = useQueryParams();
 
+  const params = React.useMemo(() => buildParams(query), [query]);
 
   const fetchFrames = async () => {
     try {
-      const response = await axios.get('/frame/product/');
+      const response = await axios.get('/frame/product/', { params });
       setFrames(response.data);
+      setIsLoading(true);
     } catch (error) {
       console.error('Failed to fetch frames', error);
     }
@@ -21,27 +44,12 @@ const FrameListView = () => {
 
   useEffect(() => {
     fetchFrames();
-  }, []);
+  }, [query]);
 
-  // Handle product deletion
-  const handleDelete = async (id) => {
-    if (confirm('Are you sure you want to delete this frame?')) {
-      try {
-        await axios.delete(`/frame/product/delete/${id}`);
-
-        setFrames((prevFrames) => prevFrames.filter((frame) => frame.id !== id));
-      } catch (error) {
-        console.error('Failed to delete frame', error);
-      }
-    }
-  };
 
   return (
-    <Layout sideNav={null}>
-      <BaseHeaderLayout
-        title="Frames"
-        subtitle={`${frames.length} frames found`}
-        as="h2"
+    <Main aria-busy={isLoading}>
+      <HeaderLayout
         primaryAction={
           <Link
             to={`/plugins/${pluginId}/create-frame`}
@@ -55,6 +63,22 @@ const FrameListView = () => {
             </Button>
           </Link>
         }
+        subtitle={`${frames.length} frames found`}
+        title="Product"
+        navigationAction={
+          <StrapiLink startIcon={<ArrowLeft />} to="/plugins/frame/">
+            Back
+          </StrapiLink>
+        }
+      />
+      <ActionLayout
+        startActions={
+          <SearchURLQuery
+            label="Search for product"
+            placeholder="Search"
+          />
+        }
+        endActions={<></>}
       />
       <ContentLayout>
         {frames.length > 0 ? (
@@ -84,7 +108,8 @@ const FrameListView = () => {
                       to={`/plugins/${pluginId}/edit-frame/${frame.id}`}
                       style={{ textDecoration: 'none' }}
                     >
-                      <Button variant="secondary" startIcon={<Pencil />} />
+                      <Button variant="secondary" startIcon={<Pencil />}>Edit</Button>
+
                     </Link>
                   </Td>
                 </Tr>
@@ -113,8 +138,12 @@ const FrameListView = () => {
           />
         )}
       </ContentLayout>
-    </Layout>
+    </Main>
   );
 };
 
 export default FrameListView;
+function buildValidGetParams(query) {
+  throw new Error('Function not implemented.');
+}
+
