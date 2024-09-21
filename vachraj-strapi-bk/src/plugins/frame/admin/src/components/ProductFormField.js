@@ -1,11 +1,17 @@
-// src/components/ProductFormField.js
-
-import React from 'react';
-import { Button, TextInput, NumberInput, Textarea, ContentLayout } from '@strapi/design-system';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import CustomizationArea from './CustomizationArea';
 import MultiSelect from './MultiSelect';
+import {
+  TextInput,
+  Textarea,
+  Box,
+  Flex,
+  Typography,
+  Button,
+  ContentLayout,
+} from '@strapi/design-system';
+import { Trash, Upload } from '@strapi/icons';
 
 const ProductFormField = ({ values = null, onSubmit }) => {
   const [name, setName] = useState(values?.name || '');
@@ -21,13 +27,14 @@ const ProductFormField = ({ values = null, onSubmit }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [categoryResponse, sizeResponse] = await Promise.all([
           axios.get('/frame/category/list?populate=*'),
-          axios.get('/frame/size/list?populate=*')
+          axios.get('/frame/size/list?populate=*'),
         ]);
         setCategories(categoryResponse.data);
         setSizes(sizeResponse.data);
@@ -40,14 +47,50 @@ const ProductFormField = ({ values = null, onSubmit }) => {
     fetchData();
   }, []);
 
+  const handlePriceChange = (e) => {
+    const value = e.target.value.replace(/,/g, '');
+    setPrice(value);
+  };
+
   const handleCustomizationChange = (data) => {
     setCustomizationZone(data.updatedIndicators);
     setPreviewImage(data.image);
   };
 
-  const handlePriceChange = (e) => {
-    const value = e.target.value.replace(/,/g, '');
-    setPrice(value);
+  // Function to upload the image file
+  const uploadImage = async (file) => {
+    const formData = new FormData();
+    formData.append('files', file);
+
+    try {
+      const response = await axios.post('/api/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data[0].id;
+    } catch (error) {
+      console.error('Failed to upload image', error);
+      throw error;
+    }
+  };
+
+  const handleImageUpload = async (event) => {
+    const files = Array.from(event.target.files);
+    const uploadedImages = await Promise.all(
+      files.map(async (file) => {
+        const fileId = await uploadImage(file);
+        return {
+          id: fileId,
+          url: URL.createObjectURL(file),
+        };
+      })
+    );
+    setImages((prevImages) => [...prevImages, ...uploadedImages]);
+  };
+
+  const handleImageDelete = (index) => {
+    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (event) => {
@@ -73,9 +116,23 @@ const ProductFormField = ({ values = null, onSubmit }) => {
     }
   };
 
+  const handleTriggerFileInput = () => {
+    fileInputRef.current.click();
+  };
+
+
   return (
     <ContentLayout>
       <form onSubmit={handleSubmit}>
+        <Flex padding="2" justifyContent="flex-end">
+          <Box>
+            <Button
+              onClick={handleSubmit}
+            >
+              Save
+            </Button>
+          </Box>
+        </Flex>
         <TextInput
           // @ts-ignore
           label="Product Name"
@@ -100,6 +157,49 @@ const ProductFormField = ({ values = null, onSubmit }) => {
           onChange={(e) => handlePriceChange(e)}
           required
         />
+        <Box>
+          <Typography variant="pi" fontWeight="bold">
+            Product Images
+          </Typography>
+          <Box marginTop={2}>
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={handleImageUpload}
+              style={{ display: 'none' }}
+              id="image-upload"
+            />
+            <label htmlFor="image-upload">
+              <Button variant="secondary" startIcon={<Upload />} onClick={handleTriggerFileInput}>
+                Upload Images
+              </Button>
+            </label>
+          </Box>
+          {images.length > 0 && (
+            <Flex wrap="wrap" gap={4} marginTop={4}>
+              {images.map((image, index) => (
+                <Box key={index} width="100px" height="100px" position="relative">
+                  <img
+                    src={image.url}
+                    alt={`Product image ${index + 1}`}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                  <Button
+                    variant="danger-light"
+                    startIcon={<Trash />}
+                    onClick={() => handleImageDelete(index)}
+                    size="S"
+                    style={{ position: 'absolute', top: '4px', right: '4px' }}
+                  >
+                    Delete
+                  </Button>
+                </Box>
+              ))}
+            </Flex>
+          )}
+        </Box>
         <MultiSelect
           placeholder="Select categories"
           label="Categories"
@@ -115,9 +215,6 @@ const ProductFormField = ({ values = null, onSubmit }) => {
           attribute={sizes}
         />
         <CustomizationArea onChange={handleCustomizationChange} previewImage={previewImage} customizationZone={customizationZone} />
-        <Button type="submit" loading={loading} style={{ marginTop: '1rem' }}>
-          Save Product
-        </Button>
         {error && <div>{error}</div>}
       </form>
     </ContentLayout>

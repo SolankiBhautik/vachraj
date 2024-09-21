@@ -38,17 +38,11 @@ module.exports = ({ strapi }) => ({
       throw new Error('ID is required to update a product');
     }
 
-    const updatedProduct = await strapi.db.query('plugin::frame.product').update({
+    await strapi.db.query('plugin::frame.product').update({
       where: { id },
-      data: updateData,
-      populate: '*',
+      data: updateData
     });
 
-    if (!updatedProduct) {
-      throw new Error('Product not found');
-    }
-
-    return updatedProduct;
   },
   async deleteFrame(id) {
     try {

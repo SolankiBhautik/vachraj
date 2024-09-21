@@ -25,8 +25,6 @@ module.exports = {
       "type": "media",
       "allowedTypes": [
         "images",
-        "files",
-        "videos"
       ],
       "multiple": true
     },

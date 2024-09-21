@@ -34,7 +34,7 @@ const CustomizationArea = ({ onChange, previewImage, customizationZone }) => {
                 }
             });
             // Return the uploaded file's ID or URL
-            return response.data[0].id; // Assuming response contains the file ID
+            return response.data[0].id;
         } catch (error) {
             console.error('Failed to upload image', error);
             throw error;

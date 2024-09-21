@@ -41,6 +41,10 @@ module.exports = ({ strapi }) => ({
       console.error('Update failed:', err);
       ctx.throw(500, err.message || 'Internal Server Error');
     }
+
+    return {
+      message: 'Updated successfully'
+    }
   },
   async findFeatured(ctx) {
     try {

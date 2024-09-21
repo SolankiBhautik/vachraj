@@ -604,7 +604,7 @@ export interface PluginFrameProduct extends Schema.CollectionType {
     name: Attribute.String;
     description: Attribute.String;
     price: Attribute.Decimal;
-    images: Attribute.Media<'images' | 'files' | 'videos', true>;
+    images: Attribute.Media<'images', true>;
     category: Attribute.Relation<
       'plugin::frame.product',
       'manyToMany',
