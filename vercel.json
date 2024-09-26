@@ -1,5 +1,5 @@
 {
-    "buildCommand": "cd vachraj-strapi-fe && npm run build && cd ../vachraj-strapi-bk && npm run build",
+    "buildCommand": "cd vachraj-strapi-fe && npm run build --no-cache && cd ../vachraj-strapi-bk && npm run build",
     "outputDirectory": "vachraj-strapi-fe/.next",
     "rewrites": [
         {
