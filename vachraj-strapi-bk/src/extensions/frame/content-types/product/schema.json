@@ -1,0 +1,57 @@
+{
+  "kind": "collectionType",
+  "collectionName": "product",
+  "info": {
+    "singularName": "product",
+    "pluralName": "products",
+    "displayName": "Product",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "price": {
+      "type": "decimal"
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::frame.category"
+    },
+    "sizes": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::frame.size"
+    },
+    "customization_zone": {
+      "type": "json",
+      "default": []
+    },
+    "customization_preview_image": {
+      "type": "media",
+      "multiple": false,
+      "required": false
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false,
+      "required": false,
+      "description": "Mark product as featured"
+    }
+  }
+}

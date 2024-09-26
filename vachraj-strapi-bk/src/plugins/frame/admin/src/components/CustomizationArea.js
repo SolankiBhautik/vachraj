@@ -6,8 +6,7 @@ import { Cross, PicturePlus, Plus, Trash } from '@strapi/icons';
 import axios from 'axios';
 
 const CustomizationArea = ({ onChange, previewImage, customizationZone }) => {
-    const [image, setImage] = useState(previewImage.url || null);
-    const [imageid, setImageid] = useState(null);
+    const [image, setImage] = useState(previewImage || null);
     const [indicators, setIndicators] = useState(customizationZone || []);
     const [dragging, setDragging] = useState(false);
     const [startPos, setStartPos] = useState({ x: 0, y: 0 });
@@ -33,26 +32,25 @@ const CustomizationArea = ({ onChange, previewImage, customizationZone }) => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            // Return the uploaded file's ID or URL
-            return response.data[0].id;
+            return response.data[0];
         } catch (error) {
             console.error('Failed to upload image', error);
             throw error;
         }
     };
 
-    // Handle image upload
     const handleImageUpload = async (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            try {
-                const fileId = await uploadImage(file);
-                setImageid(fileId);
-                setImage(URL.createObjectURL(file));
-            } catch (error) {
-                console.error('Failed to handle image upload', error);
-            }
-        }
+        const files = Array.from(event.target.files);
+        const uploadedImage = await Promise.all(
+            files.map(async (file) => {
+                return await uploadImage(file);
+            })
+        );
+        setImage(uploadedImage[0]);
+        onChange({
+            'updatedIndicators': indicators,
+            'image': image,
+        });
     };
 
     // Trigger the file input click
@@ -161,7 +159,7 @@ const CustomizationArea = ({ onChange, previewImage, customizationZone }) => {
         setShowModal(false); // Close the modal
         onChange({
             'updatedIndicators': updatedIndicators,
-            'image': imageid,
+            'image': image,
         }); // Notify parent of the changes
     };
 
@@ -172,7 +170,7 @@ const CustomizationArea = ({ onChange, previewImage, customizationZone }) => {
         setShowModal(false); // Close the modal
         onChange({
             'updatedIndicators': updatedIndicators,
-            'image': imageid,
+            'image': image,
         }); // Notify parent of the changes
     };
 
@@ -201,7 +199,7 @@ const CustomizationArea = ({ onChange, previewImage, customizationZone }) => {
                 >
                     <img
                         ref={imageRef}
-                        src={image}
+                        src={image.url}
                         alt="Customization Preview"
                         className="customizationImage"
                         style={{ cursor: canCreateRectangle ? "crosshair" : "default" }}

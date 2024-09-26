@@ -1,10 +1,9 @@
 
-import axios from 'axios';
+import { fetchData } from '../../lib/fetchData';
 import ProductItem from "../../components/ProductItem"
 
 export default async function ProductList() {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/frame/product/`);
-    const products = response.data;
+    const products = await fetchData(`/frame/product/`);
 
     return (
         <section className="product-list">

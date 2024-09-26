@@ -1,0 +1,12 @@
+{
+    "builds": [
+        {
+            "src": "vachraj-strapi-bk",
+            "use": "@vercel/static-build",
+            "config": {
+                "outputDirectory": "vachraj-strapi-bk"
+            },
+            "command": "npm run start"
+        }
+    ]
+}
