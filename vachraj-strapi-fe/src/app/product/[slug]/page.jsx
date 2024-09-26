@@ -20,7 +20,7 @@ export default function ProductPage({ params }) {
     useEffect(() => {
         async function fetchProduct() {
             try {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/frame/product/find/${slug}`)
+                const response = await axios.get(`https://vachraj.vercel.app/frame/product/find/${slug}`)
                 setProduct(response.data)
                 setSelectedSize(response.data.sizes[0]?.id) // Set initial size
                 setLoading(false)
@@ -53,7 +53,7 @@ export default function ProductPage({ params }) {
                                 <CarouselItem key={index}>
                                     <div className="aspect-square relative">
                                         <Image
-                                            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${image.url}`}
+                                            src={`https://vachraj.vercel.app${image.url}`}
                                             alt={`${product.name} - Image ${index + 1}`}
                                             layout="fill"
                                             objectFit="cover"

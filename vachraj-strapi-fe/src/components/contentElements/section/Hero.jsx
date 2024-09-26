@@ -25,7 +25,7 @@ const Hero = ({ Heading, Text, Image, Button }) => {
           <div >
             {imgdata && (
               <img
-                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${imgdata.url}`}
+                src={`https://vachraj.vercel.app${imgdata.url}`}
                 alt={imgdata.alternativeText || 'Image'}
                 width={imgdata.width}
                 height={imgdata.height}

@@ -22,7 +22,7 @@ const CheckoutPage = ({ params }) => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/frame/product/find/${slug}`);
+                const response = await axios.get(`https://vachraj.vercel.app/frame/product/find/${slug}`);
                 setProduct(response.data);
             } catch (error) {
                 console.error('Error fetching product:', error);
@@ -66,7 +66,7 @@ const CheckoutPage = ({ params }) => {
                         <div className="aspect-square relative mb-4">
                             <Image
                                 src={product.images && product.images.length > 0
-                                    ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${product.images[0].url}`
+                                    ? `https://vachraj.vercel.app${product.images[0].url}`
                                     : 'https://placehold.jp/333333/ffffff/400x400.png'}
                                 alt={product.name}
                                 layout="fill"

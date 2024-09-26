@@ -5,7 +5,7 @@ import { Card, CardContent } from './ui/Card';
 
 const ProductItem = ({ product, layout = 'default' }) => {
     const productImageUrl = product.images && product.images.length > 0
-        ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${product.images[0].url}`
+        ? `https://vachraj.vercel.app${product.images[0].url}`
         : 'https://placehold.jp/333333/ffffff/150x100.png';
 
     return (
