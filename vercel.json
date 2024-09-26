@@ -1,12 +1,18 @@
 {
-    "builds": [
+    "buildCommand": "cd vachraj-strapi-fe && npm run build && cd ../vachraj-strapi-bk && npm run build",
+    "outputDirectory": "vachraj-strapi-fe/.next",
+    "rewrites": [
         {
-            "src": "vachraj-strapi-bk",
-            "use": "@vercel/static-build",
-            "config": {
-                "outputDirectory": "vachraj-strapi-bk"
-            },
-            "command": "npm run start"
+            "source": "/strapi-admin/(.*)",
+            "destination": "/vachraj-strapi-bk/public/admin/$1"
+        },
+        {
+            "source": "/api/(.*)",
+            "destination": "/vachraj-strapi-bk/public/api/$1"
+        },
+        {
+            "source": "/(.*)",
+            "destination": "/vachraj-strapi-fe/$1"
         }
     ]
 }
