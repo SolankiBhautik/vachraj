@@ -13,12 +13,17 @@ import HomePage from '../HomePage';
 import CreateFramePage from '../CreateFramePage';
 import EditFramePage from '../EditFramePage';
 import { DesignSystemProvider, darkTheme } from '@strapi/design-system';
+import Categorys from '../Categorys';
+import Sizes from '../Sizes';
 
 const App = () => {
   return (
     <DesignSystemProvider locale="en-GB" theme={darkTheme}>
       <div>
         <Switch>
+          <Route path={`/plugins/${pluginId}`} component={HomePage} exact />
+          <Route path={`/plugins/${pluginId}/categorys`} component={Categorys} exact />
+          <Route path={`/plugins/${pluginId}/sizes`} component={Sizes} exact />
           <Route path={`/plugins/${pluginId}`} component={HomePage} exact />
           <Route path={`/plugins/${pluginId}/create-frame`} component={CreateFramePage} exact />
           <Route path={`/plugins/${pluginId}/edit-frame/:id`} component={EditFramePage} exact />

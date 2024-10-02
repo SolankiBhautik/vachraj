@@ -10,7 +10,7 @@ import FrameList from '../../components/FrameList';
 const HomePage = () => {
   return (
     <div>
-       <FrameList />
+      <FrameList />
     </div>
   );
 };

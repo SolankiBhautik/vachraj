@@ -2,27 +2,26 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import axios from 'axios'
 import { motion } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
-import { Button } from "../../../components/ui/button"
-import { Badge } from "../../../components/ui/badge"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../../components/ui/Card"
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../../../components/ui/carousel"
+import { Star } from 'lucide-react'
+import { Button } from '../../../components/ui/button'
+import { Badge } from '../../../components/ui/badge'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../../components/ui/Card'
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '../../../components/ui/carousel'
+import { fetchData } from '../../../lib/fetchData';
+import StrapiImage from '../../../components/StrapiImage';
 
 export default function ProductPage({ params }) {
     const { slug } = params
     const [product, setProduct] = useState(null)
-    const [selectedSize, setSelectedSize] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
     useEffect(() => {
         async function fetchProduct() {
             try {
-                const response = await axios.get(`https://vachraj.vercel.app/frame/product/find/${slug}`)
-                setProduct(response.data)
-                setSelectedSize(response.data.sizes[0]?.id) // Set initial size
+                const response = await fetchData(`/frame/product/find/${slug}`)
+                setProduct(response)
                 setLoading(false)
             } catch (error) {
                 console.error('Error fetching product:', error)
@@ -38,6 +37,7 @@ export default function ProductPage({ params }) {
     if (error) return <div>{error}</div>
     if (!product) return <div>Product not found</div>
 
+
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -46,19 +46,20 @@ export default function ProductPage({ params }) {
             className="container mx-auto px-4 py-8"
         >
             <div className="grid md:grid-cols-2 gap-8">
-                <Carousel className="w-full max-w-xs mx-auto md:max-w-md">
+                <Carousel
+                    opts={{
+                        align: "start",
+                        loop: true,
+                    }}
+                    className="w-full max-w-xs mx-auto md:max-w-md"
+                    thumbnails={product.images}
+                >
                     <CarouselContent>
                         {product.images && product.images.length > 0 ? (
                             product.images.map((image, index) => (
                                 <CarouselItem key={index}>
                                     <div className="aspect-square relative">
-                                        <Image
-                                            src={`https://vachraj.vercel.app${image.url}`}
-                                            alt={`${product.name} - Image ${index + 1}`}
-                                            layout="fill"
-                                            objectFit="cover"
-                                            className="rounded-lg"
-                                        />
+                                        <StrapiImage image={image} className="rounded-lg" />
                                     </div>
                                 </CarouselItem>
                             ))
@@ -69,7 +70,7 @@ export default function ProductPage({ params }) {
                                         src="https://placehold.jp/333333/ffffff/400x400.png"
                                         alt={product.name}
                                         layout="fill"
-                                        objectFit="cover"
+                                        objectFit="contain"
                                         className="rounded-lg"
                                     />
                                 </div>
@@ -82,7 +83,9 @@ export default function ProductPage({ params }) {
 
                 <div className="space-y-6">
                     <div>
-                        <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
+                        {product.name && (
+                            <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
+                        )}
                         <div className="flex items-center space-x-2 mb-4">
                             <div className="flex">
                                 {[...Array(5)].map((_, i) => (
@@ -91,17 +94,21 @@ export default function ProductPage({ params }) {
                             </div>
                             <span className="text-sm text-gray-500">(4.0)</span>
                         </div>
-                        <p className="text-2xl font-bold text-primary">${product.price.toFixed(2)}</p>
+                        {product.price && (
+                            <p className="text-2xl font-bold text-primary">${product.price.toFixed(2)}</p>
+                        )}
                     </div>
 
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Product Description</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <p className="text-gray-700">{product.description}</p>
-                        </CardContent>
-                    </Card>
+                    {product.description && (
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Product Description</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-muted-foreground">{product.description}</p>
+                            </CardContent>
+                        </Card>
+                    )}
 
                     {product.sizes.length > 0 && (
                         <Card>
@@ -111,38 +118,31 @@ export default function ProductPage({ params }) {
                             <CardContent>
                                 <div className="flex flex-wrap gap-2">
                                     {product.sizes.map((size) => (
-                                        <Button
-                                            key={size.id}
-                                            variant={selectedSize === size.id ? "default" : "outline"}
-                                            onClick={() => setSelectedSize(size.id)}
-                                        >
+                                        <Badge key={size.id} variant="secondary" className='text-muted-foreground'>
                                             {size.name}
-                                        </Button>
+                                        </Badge>
                                     ))}
                                 </div>
                             </CardContent>
-                            <CardFooter>
-                                <CardDescription>
-                                    Selected size: {product.sizes.find(s => s.id === selectedSize)?.dimensions}
-                                </CardDescription>
-                            </CardFooter>
                         </Card>
                     )}
 
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Categories</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="flex flex-wrap gap-2">
-                                {product.category.map((cat) => (
-                                    <Badge key={cat.id} variant="secondary">
-                                        {cat.name}
-                                    </Badge>
-                                ))}
-                            </div>
-                        </CardContent>
-                    </Card>
+                    {product.category.length > 0 && (
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Categories</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="flex flex-wrap gap-2">
+                                    {product.category.map((cat) => (
+                                        <Badge key={cat.id} variant="secondary" className='text-muted-foreground'>
+                                            {cat.name}
+                                        </Badge>
+                                    ))}
+                                </div>
+                            </CardContent>
+                        </Card>
+                    )}
 
                     {product.featured && (
                         <Badge variant="default" className="mb-4">

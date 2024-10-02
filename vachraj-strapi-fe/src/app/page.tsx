@@ -1,6 +1,6 @@
 // src/app/page.tsx
 import '/src/styles/globals.css';
-import React, { Suspense } from 'react';
+import React from 'react';
 import { fetchData } from '../lib/fetchData';
 import Hero from '../components/contentElements/section/Hero';
 import FeatureProduct from '../components/contentElements/section/FeatureProduct';

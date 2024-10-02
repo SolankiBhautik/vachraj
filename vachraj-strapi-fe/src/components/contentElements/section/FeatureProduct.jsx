@@ -24,7 +24,7 @@ const FeatureProduct = ({ Heading, description, Button, products }) => {
     }
 
     return (
-        <section id='featured' className="pb-16 feature">
+        <section id='featured' className="">
             <div className="container mx-auto ">
                 <div className="mb-8">
                     <div className="mb-6">

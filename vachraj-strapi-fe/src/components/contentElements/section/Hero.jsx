@@ -7,7 +7,7 @@ const Hero = ({ Heading, Text, Image, Button }) => {
   const imgdata = Image.data[0].attributes;
 
   return (
-    <section className="hero-section py-16  min-h-svh">
+    <section className="hero-section min-h-svh">
       <div className="">
         <div className="text-content flex flex-col center md:text-left  mb-8 lg:mb-0 ">
           <HeadingUi heading={Heading} text={Text} />
@@ -25,7 +25,7 @@ const Hero = ({ Heading, Text, Image, Button }) => {
           <div >
             {imgdata && (
               <img
-                src={`https://vachraj.vercel.app${imgdata.url}`}
+                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}${imgdata.url}`}
                 alt={imgdata.alternativeText || 'Image'}
                 width={imgdata.width}
                 height={imgdata.height}

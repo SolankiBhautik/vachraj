@@ -1,7 +1,6 @@
 // src/app/layout.tsx
 
 import '../styles/globals.css';
-import '../styles/animations.css';
 import '../styles/layout.css';
 
 import Navigation from '../components/Navigation';

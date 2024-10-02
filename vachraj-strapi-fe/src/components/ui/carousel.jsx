@@ -2,9 +2,10 @@
 import * as React from "react"
 import useEmblaCarousel from "embla-carousel-react";
 import { ArrowLeft, ArrowRight } from "lucide-react"
-
+import Image from "next/image";
 import { cn } from "../../lib/utils"
 import { Button } from "../../components/ui/button"
+import { motion, AnimatePresence } from 'framer-motion';
 
 const CarouselContext = React.createContext(null)
 
@@ -15,7 +16,11 @@ function useCarousel() {
     throw new Error("useCarousel must be used within a <Carousel />")
   }
 
-  return context
+  return {
+    ...context,
+    thumbnails: context.thumbnails,
+    onChange: context.onChange,
+  };
 }
 
 const Carousel = React.forwardRef((
@@ -26,6 +31,8 @@ const Carousel = React.forwardRef((
     plugins,
     className,
     children,
+    thumbnails,
+    onChange,
     ...props
   },
   ref
@@ -36,19 +43,44 @@ const Carousel = React.forwardRef((
   }, plugins)
   const [canScrollPrev, setCanScrollPrev] = React.useState(false)
   const [canScrollNext, setCanScrollNext] = React.useState(false)
+  const [selectedIndex, setSelectedIndex] = React.useState(
+    api?.slidesInView()[0] || 0
+  );
+  const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || '';
 
-  const onSelect = React.useCallback((api) => {
-    if (!api) {
-      return
+  const updateSelectedIndex = React.useCallback(() => {
+    if (api) {
+      setSelectedIndex(api.selectedScrollSnap());
     }
+  }, [api]);
 
-    setCanScrollPrev(api.canScrollPrev())
-    setCanScrollNext(api.canScrollNext())
-  }, [])
+
+  const handleThumbnailClick = React.useCallback(
+    (index) => {
+      if (onChange) {
+        onChange(index);
+      }
+      api?.scrollTo(index);
+    },
+    [onChange, api]
+  );
+
+  const onSelect = React.useCallback(
+    (api) => {
+      if (!api) {
+        return;
+      }
+
+      setCanScrollPrev(api.canScrollPrev());
+      setCanScrollNext(api.canScrollNext());
+    },
+    []
+  );
 
   const scrollPrev = React.useCallback(() => {
     api?.scrollPrev()
   }, [api])
+
 
   const scrollNext = React.useCallback(() => {
     api?.scrollNext()
@@ -62,6 +94,7 @@ const Carousel = React.forwardRef((
       event.preventDefault()
       scrollNext()
     }
+
   }, [scrollPrev, scrollNext])
 
   React.useEffect(() => {
@@ -74,17 +107,21 @@ const Carousel = React.forwardRef((
 
   React.useEffect(() => {
     if (!api) {
-      return
+      return;
     }
 
-    onSelect(api)
-    api.on("reInit", onSelect)
-    api.on("select", onSelect)
+    onSelect(api);
+    api.on("reInit", onSelect);
+    api.on("select", onSelect);
+    api.on("select", updateSelectedIndex);
+    api.on("reInit", updateSelectedIndex);
 
     return () => {
-      api?.off("select", onSelect)
+      api?.off("select", onSelect);
+      api?.off("select", updateSelectedIndex);
+      api?.off("reInit", updateSelectedIndex);
     };
-  }, [api, onSelect])
+  }, [api, onSelect, updateSelectedIndex]);
 
   return (
     (<CarouselContext.Provider
@@ -107,6 +144,55 @@ const Carousel = React.forwardRef((
         aria-roledescription="carousel"
         {...props}>
         {children}
+        {/* Thumbnails */}
+        {thumbnails && (
+          <div className="flex flex-wrap gap-2 mt-4 relative">
+            <AnimatePresence>
+              {thumbnails.map((thumbnail, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ scale: 1, opacity: 1 }}
+                  animate={
+                    selectedIndex === index
+                      ? { scale: 1.1, opacity: 1 }
+                      : { scale: 1, opacity: 0.5 }
+                  }
+                  transition={{
+                    type: "spring",
+                    bounce: 0.5,
+                    stiffness: 170,
+                    damping: 14,
+                    duration: 0.3,
+                  }}
+                  className="w-24 h-24 aspect-square relative cursor-pointer"
+                  onClick={() => handleThumbnailClick(index)}
+                >
+                  <Image
+                    className="w-24 h-24 aspect-square object-center object-cover rounded-lg"
+                    src={`${baseUrl}${thumbnail.formats.small.url}`}
+                    alt={thumbnail.alternativeText || thumbnail.name}
+                    width={thumbnail.formats.small.width}
+                    height={thumbnail.formats.small.height}
+                  />
+                  {selectedIndex === index && (
+                    <motion.div
+                      className="absolute inset-0 border-4 border-primary rounded-lg pointer-events-none"
+                      aria-hidden="true"
+                      layoutId="ThumbnailBorder"
+                      transition={{
+                        type: "spring",
+                        bounce: 0.5,
+                        stiffness: 170,
+                        damping: 14,
+                        duration: 0.3,
+                      }}
+                    />
+                  )}
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+        )}
       </div>
     </CarouselContext.Provider>)
   );

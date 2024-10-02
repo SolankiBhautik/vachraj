@@ -10,6 +10,7 @@ import { Button } from "../../../components/ui/button";
 import { Input } from "../../../components/ui/input";
 import { Label } from "../../../components/ui/Label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../../components/ui/Card";
+import { fetchData } from '../../../lib/fetchData';
 
 const CheckoutPage = ({ params }) => {
     const { slug } = params;
@@ -22,8 +23,8 @@ const CheckoutPage = ({ params }) => {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const response = await axios.get(`https://vachraj.vercel.app/frame/product/find/${slug}`);
-                setProduct(response.data);
+                const response = await fetchData(`/frame/product/find/${slug}`);
+                setProduct(response);
             } catch (error) {
                 console.error('Error fetching product:', error);
                 // Handle not found product case, you might want to return an error page or 404 component
@@ -66,7 +67,7 @@ const CheckoutPage = ({ params }) => {
                         <div className="aspect-square relative mb-4">
                             <Image
                                 src={product.images && product.images.length > 0
-                                    ? `https://vachraj.vercel.app${product.images[0].url}`
+                                    ? `${process.env.NEXT_PUBLIC_BACKEND_URL}${product.images[0].url}`
                                     : 'https://placehold.jp/333333/ffffff/400x400.png'}
                                 alt={product.name}
                                 layout="fill"

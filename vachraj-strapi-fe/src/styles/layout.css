@@ -7,6 +7,7 @@
     --feature: minmax(0, 2rem);
 
     display: grid;
+    row-gap: 2rem;
     grid-template-columns:
         [full-start] var(--full) [feature-start] var(--feature) [popout-start] var(--popout) [content-start] var(--content) [content-end] var(--popout) [popout-end] var(--feature) [feature-end] var(--full) [full-end];
 }

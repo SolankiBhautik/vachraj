@@ -1,20 +1,23 @@
 
 import { Button } from './contentElements/uiElements/Button';
 import { Card, CardContent } from './ui/Card';
+import Image from 'next/image';
+
 
 
 const ProductItem = ({ product, layout = 'default' }) => {
-    const productImageUrl = product.images && product.images.length > 0
-        ? `https://vachraj.vercel.app${product.images[0].url}`
-        : 'https://placehold.jp/333333/ffffff/150x100.png';
+    const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL || '';
+
 
     return (
         <Card className=" hover:shadow-lg transition-shadow duration-300 overflow-hidden">
             <CardContent className="p-0">
-                <img
-                    src={productImageUrl}
-                    alt={product.name || "Product Image"}
+                <Image
                     className="w-full h-auto object-cover"
+                    src={`${baseUrl}${product.images[0].formats.small.url}`}
+                    alt={product.images[0].alternativeText || product.images[0].name}
+                    width={product.images[0].formats.small.width}
+                    height={product.images[0].formats.small.height}
                 />
             </CardContent>
 
@@ -24,7 +27,7 @@ const ProductItem = ({ product, layout = 'default' }) => {
                     {product.name}
                 </div>
 
-                {layout === 'featured' && (
+                {layout === 'default' && (
                     <p className="text-xs text-muted-foreground">
                         {product.description.length > 100
                             ? `${product.description.substring(0, 100)}...`
