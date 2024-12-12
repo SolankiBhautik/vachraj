@@ -25,7 +25,7 @@ import buildParams from '../utils/buildValidGetParams'
 
 import axios from 'axios';
 
-const FrameListView = ({ }) => {
+const FrameListView = () => {
   const [frames, setFrames] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [{ query }] = useQueryParams();
